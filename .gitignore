@@ -1,0 +1,19 @@
+# Node.js závislosti
+node_modules/
+
+# IDE/Editor soubory (pro JetBrains/IntelliJ/WebStorm apod.)
+.idea/
+
+# Logy a runtime soubory
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json  # volitelně – pokud nechceš fixovat verze přes lockfile
+
+# OS specifické soubory
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# Environmentální soubory (pokud používáš)
+.env
+.env.local
