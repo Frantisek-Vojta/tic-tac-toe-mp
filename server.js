@@ -14,58 +14,64 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 2️⃣ Herní logika
 let players = []; // Seznam připojených hráčů
-let board = Array(9).fill(null); // Herní pole (3x3 pro piškvorky)
-let currentPlayer = 'X'; // Hráč, který je právě na tahu
+let board = Array(9).fill(null); // Herní pole 3x3, kde každý prvek může být 'X', 'O' nebo null
+let currentPlayer = 'X'; // Hráč, který je právě na tahu (začíná 'X')
 
-// Obsluha připojení nového klienta
+// Obsluha připojení nového klienta přes Socket.IO
 io.on('connection', socket => {
     console.log('User connected', socket.id);
 
-    // Přidání hráče, pokud jsou volná místa (max 2 hráči)
+    // Přidání hráče, pokud nejsou obsazena obě místa (max 2 hráči)
     if (players.length < 2) {
-        const symbol = players.length === 0 ? 'X' : 'O'; // První hráč = X, druhý = O
+        // První hráč dostane symbol 'X', druhý 'O'
+        const symbol = players.length === 0 ? 'X' : 'O';
         players.push({ id: socket.id, symbol });
-        socket.emit('player', symbol); // Odeslání symbolu hráči
 
-        // Spuštění hry, když jsou připojeni oba hráči
+        // Informujeme připojeného hráče o jeho symbolu
+        socket.emit('player', symbol);
+
+        // Jakmile jsou připojeni dva hráči, spustíme hru pro všechny
         if (players.length === 2) io.emit('startGame');
     } else {
-        // Pokud je místnost plná, informujeme hráče
+        // Pokud jsou už 2 hráči, oznámíme novému připojení, že je místnost plná
         socket.emit('full');
     }
 
-    // Obsluha tahu hráče
+    // Zpracování tahu hráče
     socket.on('move', ({ index, symbol }) => {
-        // Kontrola, zda je tah platný
+        // Kontrola, zda je tah platný: správný hráč na tahu a pozice volná
         if (symbol === currentPlayer && board[index] === null) {
-            board[index] = symbol; // Zápis tahu do herního pole
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Přepnutí hráče
-            io.emit('update', { board, currentPlayer }); // Odeslání aktualizace všem hráčům
+            board[index] = symbol; // Uložení tahu do pole
+            // Přepnutí tahu na druhého hráče
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            // Poslání aktualizovaného stavu hry všem hráčům
+            io.emit('update', { board, currentPlayer });
         }
     });
 
-    // Obsluha resetu hry
+    // Zpracování požadavku na reset hry
     socket.on('reset', () => {
-        board = Array(9).fill(null); // Vyčištění pole
-        currentPlayer = 'X'; // Obnovení výchozího hráče
-        io.emit('update', { board, currentPlayer }); // Odeslání nové hry
+        board = Array(9).fill(null); // Vyčištění herního pole
+        currentPlayer = 'X'; // Reset tahu na hráče 'X'
+        // Oznámení všem hráčům o resetu hry
+        io.emit('update', { board, currentPlayer });
     });
 
-    // Odpojení hráče
+    // Zpracování odpojení hráče
     socket.on('disconnect', () => {
-        // Odebrání hráče ze seznamu
+        // Odebrání odpojeného hráče ze seznamu
         players = players.filter(p => p.id !== socket.id);
 
-        // Resetování hry
+        // Reset hry při odpojení hráče
         board = Array(9).fill(null);
         currentPlayer = 'X';
 
-        // Oznámení ostatním, že hra se resetuje
+        // Informování zbylých hráčů o resetu hry
         io.emit('resetGame');
         console.log('User disconnected', socket.id);
     });
 });
 
-// Spuštění serveru
+// Spuštění serveru na daném portu (výchozí 3000)
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`Server běží na http://localhost:${PORT}`));
