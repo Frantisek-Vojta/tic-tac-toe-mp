@@ -1,0 +1,32 @@
+.header {
+    display: flex;
+    justify-content: space-between; /* Zarovná položky doleva a doprava */
+    align-items: center; /* Vertikálně na střed */
+    padding: 20px 32px;
+    background: #222;
+    color: #fff;
+    border-radius: 12px;
+    margin: 32px auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header .status {
+    font-size: 1.3rem;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+}
+
+.header .reset {
+    padding: 8px 20px;
+    font-size: 1rem;
+    background: #f0ad4e;
+    color: #222;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.header .reset:hover {
+    background: #ec971f;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="assets/default.css">
+    <link rel="stylesheet" href="assets/layout.css">
+    <link rel="stylesheet" href="assets/game.css">
+    <link rel="stylesheet" href="assets/utils.css">
+</head>
+<body>
+<div class="header">
+    <div class="status">Na tahu: X</div>
+    <button class="reset">Nová hra</button>
+</div>
+<div class="grid">
+    <div data-index="0" class="box"></div>
+    <div data-index="1" class="box"></div>
+    <div data-index="2" class="box"></div>
+    <div data-index="3" class="box"></div>
+    <div data-index="4" class="box"></div>
+    <div data-index="5" class="box"></div>
+    <div data-index="6" class="box"></div>
+    <div data-index="7" class="box"></div>
+    <div data-index="8" class="box"></div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/game.js"></script>
+</body>
+</html>

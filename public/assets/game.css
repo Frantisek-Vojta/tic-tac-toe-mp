@@ -1,0 +1,93 @@
+:root {
+    --box-size: 120px;
+    --border-radius: 12px;
+    --cross-color: #de1b1b;
+    --circle-color: #1877f2;
+    --grid-gap: 16px;
+}
+
+body {
+    background: #f4f7fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Mřížka pro hru (3x3) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--box-size));
+    grid-template-rows: repeat(3, var(--box-size));
+    gap: var(--grid-gap);
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 40px auto;
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 16px rgba(34, 69, 100, 0.07);
+    padding: 24px 18px;
+    max-width: 420px;
+}
+
+/* Styl políček */
+.box {
+    width: var(--box-size);
+    height: var(--box-size);
+    background: #fdfdfd;
+    border: 3px solid #bbb;
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 6px rgba(100, 100, 100, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.box:hover {
+    background: #f1fafe;
+    border-color: #1877f2;
+}
+
+.box.cross:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    transform: translate(-50%, -50%);
+    background-image: url('data:image/svg+xml;utf8,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><line x1="8" y1="8" x2="52" y2="52" stroke="%23de1b1b" stroke-width="7" stroke-linecap="round"/><line x1="52" y1="8" x2="8" y2="52" stroke="%23de1b1b" stroke-width="7" stroke-linecap="round"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    opacity: 0.93;
+    pointer-events: none;
+}
+
+
+.box.circle:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 64px;
+    height: 64px;
+    border: 7px solid var(--circle-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    opacity: 0.93;
+    background: none;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --box-size: 70px;
+    }
+    .grid {
+        padding: 10px 2px;
+        max-width: 220px;
+    }
+}
